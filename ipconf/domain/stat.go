@@ -7,7 +7,7 @@ type Stat struct {
 	MessageBytes float64
 }
 
-func (s *Stat) CalculateActiveSorce() float64 {
+func (s *Stat) CalculateActiveScore() float64 {
 
 	return getGB(s.ConnectNum)
 }
@@ -55,6 +55,6 @@ func min(a, b, c float64) float64 {
 	}
 	return m(a, m(b, c))
 }
-func (s *Stat) CalculateStaticSorce() float64 {
+func (s *Stat) CalculateStaticScore() float64 {
 	return s.ConnectNum
 }

@@ -36,7 +36,7 @@ func NewServiceDiscovery(ctx *context.Context) *ServiceDiscovery {
 // WatchService 初始化服务列表和监视
 func (s *ServiceDiscovery) WatchService(prefix string, set, del func(key, value string)) error {
 	//根据前缀获取现有的key
-	resp, err := s.cli.Get(*s.ctx, prefix, clientv3.WithPrefix())
+	resp, err := s.cli.Get(*s.ctx, prefix, clientv3.WithPrefix()) //匹配所有以指定前缀开头的键。
 	if err != nil {
 		return err
 	}

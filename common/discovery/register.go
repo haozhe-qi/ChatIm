@@ -21,7 +21,6 @@ type ServiceRegister struct {
 }
 
 // NewServiceRegister 新建注册服务
-// NewServiceRegister 新建注册服务
 func NewServiceRegister(ctx *context.Context, key string, endportinfo *EndpointInfo, lease int64) (*ServiceRegister, error) {
 	cli, err := clientv3.New(clientv3.Config{
 		Endpoints:   config.GetEndpointsForDiscovery(),
