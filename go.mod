@@ -45,6 +45,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/nsf/termbox-go v1.1.1 // indirect
 	github.com/nyaruka/phonenumbers v1.0.55 // indirect
+	github.com/panjf2000/ants/v2 v2.11.3 
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/prometheus/client_golang v1.23.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
@@ -66,6 +67,7 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
 	golang.org/x/net v0.40.0 // indirect
+	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.25.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20241209162323-e6fa225c2576 // indirect
