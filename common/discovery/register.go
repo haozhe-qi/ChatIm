@@ -6,7 +6,9 @@ import (
 
 	"github.com/bytedance/gopkg/util/logger"
 	"github.com/haozhe-qi/ChatIm/common/config"
-	"go.etcd.io/etcd/clientv3"
+
+	//"go.etcd.io/etcd/clientv3"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 // ServiceRegister 创建租约注册服务

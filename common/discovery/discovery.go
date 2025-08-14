@@ -5,9 +5,12 @@ import (
 	"sync"
 
 	"github.com/bytedance/gopkg/util/logger"
-	"github.com/coreos/etcd/mvcc/mvccpb"
+	//"github.com/coreos/etcd/mvcc/mvccpb"
 	"github.com/haozhe-qi/ChatIm/common/config"
-	"go.etcd.io/etcd/clientv3"
+	"go.etcd.io/etcd/api/v3/mvccpb"
+
+	//"go.etcd.io/etcd/clientv3"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 // ServiceDiscovery 服务发现
