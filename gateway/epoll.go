@@ -66,11 +66,8 @@ func (e *ePool) createAcceptProcess() {
 					}
 					fmt.Errorf("accept err: %v", e)
 				}
-				c := connection{
-					conn: conn,
-					fd:   socketFD(conn),
-				}
-				ep.addTask(&c)
+				c := NewConnection(conn)
+				ep.addTask(c)
 			}
 		}()
 	}
@@ -136,7 +133,8 @@ func (e *ePool) addTask(c *connection) {
 
 // epoller 对象 轮询器
 type epoller struct {
-	fd int
+	fd            int
+	fdToConnTable sync.Map
 }
 
 func newEpoller() (*epoller, error) {
@@ -153,12 +151,13 @@ func newEpoller() (*epoller, error) {
 func (e *epoller) add(conn *connection) error {
 	// Extract file descriptor associated with the connection
 	fd := conn.fd
-	//连接一来直接监听读事件和挂起事件再说
 	err := unix.EpollCtl(e.fd, syscall.EPOLL_CTL_ADD, fd, &unix.EpollEvent{Events: unix.EPOLLIN | unix.EPOLLHUP, Fd: int32(fd)})
 	if err != nil {
 		return err
 	}
-	ep.tables.Store(fd, conn)
+	e.fdToConnTable.Store(conn.fd, conn)
+	ep.tables.Store(conn.id, conn)
+	conn.BindEpoller(e)
 	return nil
 }
 func (e *epoller) remove(c *connection) error {
@@ -168,7 +167,8 @@ func (e *epoller) remove(c *connection) error {
 	if err != nil {
 		return err
 	}
-	ep.tables.Delete(fd)
+	ep.tables.Delete(c.id)
+	e.fdToConnTable.Delete(c.fd)
 	return nil
 }
 func (e *epoller) wait(msec int) ([]*connection, error) {
@@ -180,7 +180,7 @@ func (e *epoller) wait(msec int) ([]*connection, error) {
 	var connections []*connection
 	for i := 0; i < n; i++ {
 		//map里根据fd查connection
-		if conn, ok := ep.tables.Load(int(events[i].Fd)); ok {
+		if conn, ok := e.fdToConnTable.Load(int(events[i].Fd)); ok {
 			connections = append(connections, conn.(*connection))
 		}
 	}

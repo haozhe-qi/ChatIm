@@ -21,23 +21,23 @@ func initStateClient() {
 
 }
 
-func CancleConn(ctx *context.Context, endpoint string, fd int32, payLoad []byte) error {
+func CancleConn(ctx *context.Context, endpoint string, connID uint64, payLoad []byte) error {
 	rpcCtx, _ := context.WithTimeout(*ctx, 100*time.Millisecond)
 	stateClient.CancelConn(rpcCtx, &service.StateRequest{
 		Endpoint: endpoint,
-		Fd:       fd,
+		ConnID:   connID,
 		Data:     payLoad,
 	})
 	return nil
 }
 
 // gateway读取固定长度去除len，按len读出payload，直接发给state server
-func SendMsg(ctx *context.Context, endpoint string, fd int32, payLoad []byte) error {
+func SendMsg(ctx *context.Context, endpoint string, connID uint64, payLoad []byte) error {
 	rpcCtx, _ := context.WithTimeout(*ctx, 100*time.Millisecond)
 	//request放进去直接调用 state server收到后会把这个放channel里，开个协程去channel里处理
 	_, err := stateClient.SendMsg(rpcCtx, &service.StateRequest{
 		Endpoint: endpoint,
-		Fd:       fd,
+		ConnID:   connID,
 		Data:     payLoad,
 	})
 	if err != nil {
