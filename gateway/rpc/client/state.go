@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/haozhe-qi/ChatIm/common/config"
@@ -32,13 +33,14 @@ func CancleConn(ctx *context.Context, endpoint string, connID uint64, payLoad []
 }
 
 // gateway读取固定长度去除len，按len读出payload，直接发给state server
-func SendMsg(ctx *context.Context, endpoint string, connID uint64, payLoad []byte) error {
+func SendMsg(ctx *context.Context, endpoint string, connID uint64, payload []byte) error {
 	rpcCtx, _ := context.WithTimeout(*ctx, 100*time.Millisecond)
+	fmt.Println("sendMsg", connID, string(payload))
 	//request放进去直接调用 state server收到后会把这个放channel里，开个协程去channel里处理
 	_, err := stateClient.SendMsg(rpcCtx, &service.StateRequest{
 		Endpoint: endpoint,
 		ConnID:   connID,
-		Data:     payLoad,
+		Data:     payload,
 	})
 	if err != nil {
 		panic(err)
